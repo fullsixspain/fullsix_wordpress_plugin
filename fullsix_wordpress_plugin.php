@@ -26,7 +26,8 @@ function fullsix_wordpress_plugin_filter_user_content($content) {
     if ($tags == null) return $content;
     $found = false;
     foreach ($tags as $tag) {
-        if ($tag->name === 'twig') {
+        $tagName = $tag->name;
+        if (strlen($tagName) >= 4 && substr($tagName, 0, 4) == 'twig') {
             $found = true;
             break;
         }
