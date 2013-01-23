@@ -49,3 +49,19 @@ function attach_category_to_page() {
     register_taxonomy_for_object_type('category','page');
 }
 //end
+
+// This is used to disable wordpress canonical redirects (find the best suited page where url is not completely correct)
+add_action('template_redirect', 'remove_404_redirect', 1);
+function remove_404_redirect(){
+    if (is_404()){
+        $id = max(get_query_var('p'), get_query_var('page_id'), get_query_var('attachment_id'));
+        $redirect_url = false;
+        if ($id && $redirect_post = get_post($id)) {
+            $post_type_obj = get_post_type_object($redirect_post->post_type);
+            if ($post_type_obj->public)
+                $redirect_url = get_permalink($redirect_post);
+        }
+        if (!$redirect_url)
+            remove_filter('template_redirect', 'redirect_canonical');
+    }
+}
