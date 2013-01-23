@@ -65,3 +65,7 @@ function remove_404_redirect(){
             remove_filter('template_redirect', 'redirect_canonical');
     }
 }
+
+
+// Anoying redirection
+remove_action( 'template_redirect', 'wp_redirect_admin_locations', 1000 );
